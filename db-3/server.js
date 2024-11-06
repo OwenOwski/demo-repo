@@ -29,7 +29,8 @@ app.get('/cats', async (req, res) => {
 app.get('/cats/:id', async (req, res) => {
     const id = parseInt(req.params.id);
     const cat = await getCat(id);
-    res.render('cat_detail', {cat});
+    const toys =  await getToysForCat(id);
+    res.render('cat_detail', {cat, toys});
 });
 
 

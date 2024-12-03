@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cookieParser from 'cookie-parser';
 import {getCats, getCat, getToysForCat} from './data/cats.js';
 import router  from "./router.js";
 import {authRouter}  from "./auth.js";

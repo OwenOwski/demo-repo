@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import {getUser, createUser} from './data/users.js'
 dotenv.config();
 const authRouter = express.Router();
@@ -34,6 +35,18 @@ authRouter.post("/login", async (req, res) => {
     try {
         const userRecord = await getUser(user);
 
+        if(match) {
+            const token = jwt.sign(
+                userRecord.username, 
+                JWT_SECRET, 
+                {expiresIn: '1h'});
+            res.cookie('token', token, {
+                httpOnly:true,
+                secure: true,
+                sameSite: 'strict',
+            })
+
+        }
         const match = await bcrypt.compare(password, userRecord.hashedpassword);
         if (match) {
             res.json({ message: 'Login successful' });
